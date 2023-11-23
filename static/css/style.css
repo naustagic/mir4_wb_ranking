@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url("{{ url_for('static', filename='img/background.jpg') }}") fixed;
+    background-size: cover;
+    background-blend-mode: overlay;
+    /* Adiciona uma mistura para sobrepor a cor de fundo */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Cor de fundo com transparência */
+    color: #fff;
+}
+
+.dark-mode select,
+.dark-mode option {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Adiciona cores personalizadas para os nav-items */
+.nav-tabs .nav-item {
+    background-color: #444;
+    /* Cor de fundo padrão */
+    width: 16.6667%;
+    /* Defina a largura para 100% dividido pelo número de itens (6 itens no seu caso) */
+    text-align: center;
+    /* Centraliza o texto */
+}
+
+.nav-tabs .nav-item:hover {
+    background-color: #555;
+    /* Cor de fundo ao passar o mouse */
+}
+
+.nav-tabs .nav-item a {
+    color: #fff;
+    /* Cor do texto */
+}
+
+/* Estilo para a aba ativa */
+.nav-tabs .nav-item.active {
+    background-color: #666 !important;
+    /* Cor de fundo para a aba ativa */
+}
+
+.nav-tabs .nav-item.active a {
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.container {
+    margin-top: 50px;
+}

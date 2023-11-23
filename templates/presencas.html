@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presenças Por WB - 3kTeam Mir4</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            /* Cor do texto */
+            overflow-x: hidden;
+            /* Impede a rolagem horizontal */
+        }
+
+        .dark-mode select,
+        .dark-mode option {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .background-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            /* Coloca o container da imagem atrás do conteúdo */
+            overflow: hidden;
+        }
+
+        .background {
+            /* Define a cor de fundo do site como transparente */
+            background-color: rgba(187, 59, 59, 0.3);
+            /* Transparência da camada entre a imagem e o conteúdo */
+            /* Cor de fundo com transparência */
+            mix-blend-mode: overlay;
+            /* Adiciona mistura para sobrepor a cor de fundo */
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            /* Redimensiona a imagem de fundo para cobrir toda a tela */
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Transparência da camada sobre a imagem */
+            z-index: -1;
+            /* Coloca a camada entre a imagem e o conteúdo */
+        }
+
+        .content {
+            /* Adiciona um espaçamento no topo para os links serem clicáveis */
+            padding-top: 50px;
+        }
+
+        .nav-link {
+            color: white !important;
+            background-color: #444; /* Cor de fundo padrão */
+            border: 1px solid white;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .nav-link:hover {
+            background-color: #007bff;
+            color: white !important;
+        }
+
+        .nav-link.active {
+            background-color: white;
+            color: #495057 !important;
+        }
+        .table {
+        background-color: rgba(255, 255, 255, 0.219); /* Altere a cor e a opacidade conforme necessário */
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="background-container">
+        <img src="{{url_for('static', filename='/img/background.jpg')}}" alt="Sua imagem" class="background">
+        <div class="overlay"></div>
+    </div>
+
+    <!-- Navbar responsiva -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Dashboard - 3'14 K Team | WB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <div class="button-menu d-flex flex-column flex-lg-row">
+                <a href="/" class="nav-link rounded">Home</a>
+                <a href="/presencas/lab_manha" class="nav-link rounded">Lab Manhã</a>
+                <a href="/presencas/vales_manha" class="nav-link rounded">Vales Manhã</a>
+                <a href="/presencas/lab_noite" class="nav-link rounded">Lab Noite</a>
+                <a href="/presencas/vales_noite" class="nav-link rounded">Vales Noite</a>
+                <a href="/presencas/consolidado" class="nav-link rounded">Consolidado</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 content">
+        <div id="content">
+            <h2>Dashboard</h2>
+            <div class="container content">
+                <h2>Presenças - {{ intervalo }}</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Usuário</th>
+                            <th scope="col">Total de Presenças</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario[0] }}</td>
+                            <td>{{ usuario[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.nav-link').click(function (e) {
+                    e.preventDefault();
+                    var href = $(this).attr('href');
+                    $.get(href, function (response) {
+                        var newDoc = document.open("text/html", "replace");
+                        newDoc.write(response);
+                        newDoc.close();
+                        var content = $(newDoc).find('.content').html();
+                        $('#content').html(content);
+
+                        // Adiciona classe 'active' ao botão correspondente à página atual
+                        $('.button-menu .nav-link').removeClass('active');
+                        $('.button-menu .nav-link[href="' + href + '"]').addClass('active');
+                    });
+                });
+            });
+
+        </script>
+</body>
+
+</html>
